@@ -1,0 +1,30 @@
+// src/admin/components/Panels.tsx
+import React from 'react';
+import type { PanelComponent, PanelComponentProps } from '@strapi/content-manager/strapi-admin';
+import TranslateButton from './TranslateButton';
+import InsertLinksButton from './InsertLinksButton';
+import CopyInfo from './CopyInfo';
+
+// Translate 面板
+export const TranslatePanel: PanelComponent = (props: PanelComponentProps) => {
+  return {
+    title: 'Translate',
+    content: <TranslateButton />,
+  };
+};
+
+// Insert Links 面板
+export const InsertLinksPanel: PanelComponent = (props: PanelComponentProps) => {
+  return {
+    title: 'Insert Links',
+    content: <InsertLinksButton />,
+  };
+};
+
+// Copy Info 面板
+export const CopyInfoPanel: PanelComponent = (props: PanelComponentProps) => {
+  return {
+    title: 'Copy Info',
+    content: <CopyInfo />,
+  };
+};

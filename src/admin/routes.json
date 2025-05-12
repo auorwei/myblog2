@@ -1,0 +1,11 @@
+[
+    {
+      "method": "POST",
+      "path": "/admin/entry-info",
+      "handler": "entry-info.show",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+  

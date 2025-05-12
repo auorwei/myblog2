@@ -1,0 +1,177 @@
+import StrapiApiService from './StrapiApiService';
+import { EntryInfo } from '../utils/adminUrlParser';
+
+/**
+ * 翻译服务类 - 封装与翻译相关的业务逻辑
+ */
+class TranslationService {
+  private apiService: StrapiApiService;
+
+  /**
+   * 构造函数 - 初始化API服务
+   * @param apiToken 可选的API令牌
+   */
+  constructor(apiToken?: string) {
+    this.apiService = new StrapiApiService(apiToken);
+  }
+
+  /**
+   * 获取英文版本内容
+   * @param entryInfo 条目信息
+   * @returns 英文内容
+   */
+  async getEnglishContent(entryInfo: EntryInfo) {
+    console.log('获取英文内容:', entryInfo);
+    return this.apiService.getEntry(entryInfo.apiEndpoint, entryInfo.id, 'en');
+  }
+
+  /**
+   * 获取中文版本内容
+   * @param entryInfo 条目信息
+   * @returns 中文内容，如果不存在则返回null
+   */
+  async getChineseContent(entryInfo: EntryInfo) {
+    try {
+      console.log('尝试获取中文内容:', entryInfo);
+      return await this.apiService.getEntry(entryInfo.apiEndpoint, entryInfo.id, 'zh-hans');
+    } catch (error) {
+      console.log('获取中文内容失败，可能不存在中文版本');
+      return null;
+    }
+  }
+
+  /**
+   * 创建中文版本
+   * @param entryInfo 条目信息
+   * @param englishContent 英文内容
+   * @returns 创建的中文内容
+   */
+  async createChineseVersion(entryInfo: EntryInfo, englishContent: any) {
+    console.log('创建中文版本:', entryInfo);
+    
+    // 复制英文内容并修改为中文
+    const chineseData = JSON.parse(JSON.stringify(englishContent));
+    
+    // 移除ID和文档ID(创建时不应包含)
+    delete chineseData.id;
+    delete chineseData.documentId;
+    
+    // 设置语言为中文
+    chineseData.locale = 'zh-hans';
+    
+    // 设置与英文版的关联
+    if (englishContent.documentId) {
+      chineseData.localizations = {
+        connect: [englishContent.documentId]
+      };
+    }
+    
+    // 调用API创建中文版本
+    try {
+      const response = await fetch(`${window.location.origin}/api/${entryInfo.apiEndpoint}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.apiService.getToken()}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ data: chineseData })
+      });
+      
+      if (!response.ok) {
+        throw new Error(`创建中文版本失败: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      console.log('中文版本创建成功:', result);
+      return result.data;
+    } catch (error) {
+      console.error('创建中文版本出错:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * 更新中文版本
+   * @param entryInfo 条目信息
+   * @param chineseDocumentId 中文版本的文档ID
+   * @param englishContent 英文内容(作为更新的基础)
+   * @returns 更新后的中文内容
+   */
+  async updateChineseVersion(entryInfo: EntryInfo, chineseDocumentId: string, englishContent: any) {
+    console.log('更新中文版本:', entryInfo, chineseDocumentId);
+    
+    // 复制英文内容并修改为中文
+    const chineseData = JSON.parse(JSON.stringify(englishContent));
+    
+    // 移除ID和文档ID(更新时不应包含)
+    delete chineseData.id;
+    delete chineseData.documentId;
+    
+    // 设置语言为中文
+    chineseData.locale = 'zh-hans';
+    
+    // 调用API更新中文版本
+    try {
+      const response = await fetch(`${window.location.origin}/api/${entryInfo.apiEndpoint}/${chineseDocumentId}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${this.apiService.getToken()}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ data: chineseData })
+      });
+      
+      if (!response.ok) {
+        throw new Error(`更新中文版本失败: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      console.log('中文版本更新成功:', result);
+      return result.data;
+    } catch (error) {
+      console.error('更新中文版本出错:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * 处理翻译流程 - 获取英文内容并创建或更新中文内容
+   * @param entryInfo 条目信息
+   * @returns 处理结果: { englishContent, chineseContent, action }
+   */
+  async processTranslation(entryInfo: EntryInfo) {
+    // 1. 获取英文内容
+    const englishContent = await this.getEnglishContent(entryInfo);
+    
+    if (!englishContent) {
+      throw new Error('获取英文内容失败');
+    }
+    
+    // 2. 尝试获取中文版本
+    const existingChineseContent = await this.getChineseContent(entryInfo);
+    
+    let chineseContent;
+    let action;
+    
+    // 3. 如果中文版本存在则更新，否则创建
+    if (existingChineseContent) {
+      action = 'updated';
+      chineseContent = await this.updateChineseVersion(
+        entryInfo, 
+        existingChineseContent.documentId, 
+        englishContent
+      );
+    } else {
+      action = 'created';
+      chineseContent = await this.createChineseVersion(entryInfo, englishContent);
+    }
+    
+    return {
+      englishContent,
+      chineseContent,
+      action
+    };
+  }
+}
+
+export default TranslationService; 
