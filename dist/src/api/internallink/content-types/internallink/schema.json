@@ -1,0 +1,17 @@
+{
+    "kind": "collectionType",
+    "collectionName": "internallinks",
+    "info": {
+        "singularName": "internallink",
+        "pluralName": "internallinks",
+        "displayName": "InternalLinks"
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "attributes": {
+        "link": {
+            "type": "json"
+        }
+    }
+}

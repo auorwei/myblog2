@@ -1,0 +1,74 @@
+{
+    "kind": "collectionType",
+    "collectionName": "articles",
+    "info": {
+        "singularName": "article",
+        "pluralName": "articles",
+        "displayName": "article",
+        "description": ""
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "pluginOptions": {
+        "i18n": {
+            "localized": true
+        }
+    },
+    "attributes": {
+        "title": {
+            "type": "string",
+            "pluginOptions": {
+                "i18n": {
+                    "localized": true
+                }
+            },
+            "required": true
+        },
+        "coverPicture": {
+            "type": "media",
+            "multiple": false,
+            "required": true,
+            "allowedTypes": [
+                "images"
+            ]
+        },
+        "category": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::category.category",
+            "inversedBy": "articles"
+        },
+        "tags": {
+            "type": "relation",
+            "relation": "manyToMany",
+            "target": "api::tag.tag",
+            "mappedBy": "articles"
+        },
+        "content": {
+            "type": "customField",
+            "options": {
+                "preset": "defaultHtml"
+            },
+            "pluginOptions": {
+                "i18n": {
+                    "localized": true
+                }
+            },
+            "required": true,
+            "customField": "plugin::ckeditor5.CKEditor"
+        },
+        "slug": {
+            "type": "uid",
+            "required": true,
+            "targetField": "title"
+        },
+        "contentMark": {
+            "type": "customField",
+            "options": {
+                "preset": "defaultMarkdown"
+            },
+            "customField": "plugin::ckeditor5.CKEditor"
+        }
+    }
+}

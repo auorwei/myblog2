@@ -20,15 +20,9 @@ export default {
         Component: TranslateButton,
       });
 
-      cm.injectComponent('editView', 'right-links', {
-        name: 'insert-links-button',
-        Component: InsertLinksButton,
-      });
+    
 
-      cm.injectComponent('editView', 'right-links', {
-        name: 'copy-info',
-        Component: CopyInfo,
-      });
+    
 
     // — 或者用侧边栏 API —
     //cm.apis.addEditViewSidePanel([TranslatePanel, InsertLinksPanel]);

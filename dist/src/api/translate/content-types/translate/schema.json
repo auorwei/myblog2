@@ -1,0 +1,19 @@
+{
+    "kind": "singleType",
+    "collectionName": "translates",
+    "info": {
+        "singularName": "translate",
+        "pluralName": "translates",
+        "displayName": "Translate"
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "name": {
+            "type": "string",
+            "default": "Translation Service"
+        }
+    }
+}

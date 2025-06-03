@@ -65,11 +65,12 @@ $RECYCLE.BIN/
 # Logs and databases
 ############################
 
-.tmp
+.tmp/
 *.log
 *.sql
 *.sqlite
 *.sqlite3
+database/data.db # Strapi's default SQLite file location if used locally
 
 
 ############################
@@ -77,11 +78,9 @@ $RECYCLE.BIN/
 ############################
 
 *#
-ssl
-.idea
-nbproject
-public/uploads/*
-!public/uploads/.gitkeep
+# ssl/ # If you store SSL certs locally for dev, exclude them
+.idea/
+nbproject/
 .tsbuildinfo
 .eslintcache
 
@@ -89,12 +88,12 @@ public/uploads/*
 # Node.js
 ############################
 
-lib-cov
+lib-cov/
 lcov.info
-pids
-logs
-results
-node_modules
+pids/
+logs/
+results/
+node_modules/
 .node_history
 
 ############################
@@ -110,22 +109,57 @@ node_modules
 !.yarn/versions
 .pnp.*
 yarn-error.log
+npm-debug.log*
+yarn-debug.log*
 
 ############################
 # Tests
 ############################
 
-coverage
+coverage/
+.nyc_output/
 
 ############################
 # Strapi
 ############################
 
-.env
+.env # ALL .env files
+.env.*
+!.env.example # Keep example files
+!.env.development.example
+!.env.production.example
+
 license.txt
-exports
-.strapi
-dist
-build
+exports/
+.strapi/ # Strapi cache and auto-generated files
+dist/ # Build output
+build/ # Common build output folder
+
+# Public uploads - generally, you might want to back these up separately
+# or use a dedicated storage service (S3, Cloudinary) in production.
+# If you commit them, be mindful of repository size.
+# For now, we assume they are managed via Docker volume and backed up separately.
+public/uploads/*
+!public/uploads/.gitkeep
+
+# Strapi Cloud specific (if not using, can be removed)
 .strapi-updater.json
 .strapi-cloud.json
+
+# Docker specific
+Dockerfile
+docker-compose.yml
+.dockerignore
+# deploy/env.production.example # Already covered by !.env.production.example if you follow that pattern
+
+# Deployment scripts with sensitive info (adjust as needed)
+deploy/.env*
+deploy/quick-deploy.ps1
+
+# Backup files that might be created by scripts
+*.sql # Database backups, e.g., from deploy.sh
+*.tar.gz
+*.zip
+
+# VSCode
+.vscode/

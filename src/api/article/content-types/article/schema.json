@@ -16,12 +16,6 @@
     }
   },
   "attributes": {
-    "slug": {
-      "type": "string",
-      "regex": "^[a-z0-9-]+$",
-      "required": true,
-      "unique": true
-    },
     "title": {
       "type": "string",
       "pluginOptions": {
@@ -64,17 +58,17 @@
       "required": true,
       "customField": "plugin::ckeditor5.CKEditor"
     },
-    "Translation": {
-      "type": "customField",
-      "default": "[]",
-      "options": [
-        "zh-Hans",
-        "zh-Hant"
-      ],
-      "customField": "plugin::multi-select.multi-select"
+    "slug": {
+      "type": "uid",
+      "required": true,
+      "targetField": "title"
     },
-    "defaultEditor": {
-      "type": "text"
+    "contentMark": {
+      "type": "customField",
+      "options": {
+        "preset": "defaultMarkdown"
+      },
+      "customField": "plugin::ckeditor5.CKEditor"
     }
   }
 }

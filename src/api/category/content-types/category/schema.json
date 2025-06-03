@@ -26,12 +26,6 @@
         }
       }
     },
-    "slug": {
-      "type": "string",
-      "required": true,
-      "regex": "^[a-z0-9-]+$",
-      "unique": true
-    },
     "description": {
       "type": "string",
       "required": true,
@@ -46,6 +40,22 @@
       "relation": "oneToMany",
       "target": "api::article.article",
       "mappedBy": "category"
+    },
+    "parent_category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "children_categories"
+    },
+    "children_categories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::category.category",
+      "mappedBy": "parent_category"
+    },
+    "slug": {
+      "type": "uid",
+      "required": true
     }
   }
 }

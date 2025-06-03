@@ -1,0 +1,24 @@
+# 排除文件和目录列表
+node_modules/
+.tmp/
+dist/
+.git/
+.env*
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+.cache/
+coverage/
+.nyc_output/
+.strapi/
+database/*.db
+database/*.sqlite
+database/*.sqlite3
+*.pid
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log* 
