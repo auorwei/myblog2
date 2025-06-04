@@ -149,9 +149,9 @@ public/uploads/*
 .strapi-cloud.json
 
 # Docker specific
-Dockerfile
-docker-compose.yml
-.dockerignore
+# Dockerfile - 注释掉，允许包含Dockerfile用于部署
+# docker-compose.yml - 注释掉，允许包含docker-compose.yml用于部署
+# .dockerignore - 注释掉，允许包含.dockerignore用于部署
 # deploy/env.production.example # Already covered by !.env.production.example if you follow that pattern
 
 # Deployment scripts with sensitive info (adjust as needed)
