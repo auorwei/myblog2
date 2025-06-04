@@ -125,9 +125,9 @@ coverage/
 # Strapi
 ############################
 
-# .env # ALL .env files - 注释掉，测试环境需要包含
-# .env.* - 注释掉，测试环境需要包含
-!.env.example # Keep example files
+.env
+.env.*
+!.env.example
 !.env.development.example
 !.env.production.example
 
