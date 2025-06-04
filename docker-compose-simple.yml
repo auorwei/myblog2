@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  strapi:
+    build: .
+    container_name: strapi-backend-simple
+    restart: unless-stopped
+    env_file:
+      - .env  # 从.env文件读取所有环境变量
+    environment:
+      # 确保容器内的主机和端口配置
+      HOST: 0.0.0.0
+      PORT: ${PORT:-1337}
+    volumes:
+      # 共享开发环境的数据库文件
+      - ./.tmp:/app/.tmp
+      # 共享上传文件目录
+      - ./public/uploads:/app/public/uploads
+      # 共享配置文件（可选，用于开发调试）
+      - ./config:/app/config:ro
+    ports:
+      - "${PORT:-1337}:${PORT:-1337}"
+    networks:
+      - strapi-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:${PORT:-1337}", "||", "exit", "1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  strapi-network:
+    driver: bridge 

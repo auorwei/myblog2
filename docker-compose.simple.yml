@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  strapi:
+    build: .
+    container_name: strapi-backend-simple
+    restart: unless-stopped
+    env_file:
+      - .env  # 从.env文件读取所有环境变量
+    environment:
+      # 确保容器内的关键配置
+      HOST: 0.0.0.0
+      PORT: ${PORT:-1337}
+    volumes:
+      - ./.tmp:/app/.tmp
+      - ./public/uploads:/app/public/uploads
+    ports:
+      - "${PORT:-1337}:${PORT:-1337}"
+
+networks:
+  default:
+    name: strapi-network 
