@@ -23,11 +23,21 @@ services:
       STRAPI_ADMIN_CLIENT_PREVIEW_SECRET: ${STRAPI_ADMIN_CLIENT_PREVIEW_SECRET:-preview-secret}
       IS_PROXIED: true
       
-      # Vite配置 - 解决域名阻止问题
+      # Vite配置 - 彻底解决域名阻止问题
       VITE_HOST: 0.0.0.0
       VITE_PORT: ${PORT:-1337}
-      VITE_ALLOWED_HOSTS: learn.waynechen.xyz,localhost,127.0.0.1
+      VITE_ALLOWED_HOSTS: learn.waynechen.xyz,localhost,127.0.0.1,0.0.0.0
       DANGEROUSLY_DISABLE_HOST_CHECK: true
+      
+      # 额外的主机检查配置
+      DISABLE_HOST_CHECK: true
+      WDS_SOCKET_HOST: learn.waynechen.xyz
+      WDS_SOCKET_PORT: ${PORT:-1337}
+      CHOKIDAR_USEPOLLING: true
+      
+      # Webpack开发服务器配置
+      WEBPACK_DEV_SERVER_HOST: 0.0.0.0
+      WEBPACK_DEV_SERVER_DISABLE_HOST_CHECK: true
       
       # 其他生产环境配置
       STRAPI_DISABLE_UPDATE_NOTIFICATION: true
