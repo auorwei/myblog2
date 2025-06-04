@@ -1,9 +1,12 @@
 FROM node:22-alpine
 
+# Install wget for healthcheck
+RUN apk add --no-cache wget
+
 # Set working directory
 WORKDIR /opt/app
 
-# Copy package files
+# Copy package files first
 COPY package*.json ./
 
 # Install dependencies
@@ -12,8 +15,8 @@ RUN npm ci --only=production
 # Copy source code
 COPY . .
 
-# Create uploads directory
-RUN mkdir -p public/uploads
+# Ensure data directory exists and has correct permissions
+RUN mkdir -p .tmp public/uploads
 
 # Build the application
 RUN npm run build
@@ -22,8 +25,10 @@ RUN npm run build
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S strapi -u 1001
 
-# Change ownership
+# Change ownership of app directory
 RUN chown -R strapi:nodejs /opt/app
+
+# Switch to non-root user
 USER strapi
 
 # Expose port
