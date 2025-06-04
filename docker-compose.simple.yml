@@ -21,6 +21,21 @@ services:
       - "1337:1337"
     networks:
       - strapi
+    command: >
+      sh -c "
+        if [ ! -f /opt/app/.tmp/data.db ]; then
+          echo 'Initializing database with existing data...'
+          cp /opt/app/.tmp/data.db.init /opt/app/.tmp/data.db
+          chown strapi:nodejs /opt/app/.tmp/data.db
+        fi &&
+        npm start
+      "
+
+volumes:
+  strapi-data:
+    name: strapi-data
+  strapi-uploads:
+    name: strapi-uploads
 
 networks:
   strapi:
