@@ -1,38 +1,26 @@
-FROM node:22-alpine
+# 使用官方Node.js镜像
+FROM node:18-alpine
 
-# Install wget for healthcheck
-RUN apk add --no-cache wget
+# 设置工作目录
+WORKDIR /app
 
-# Set working directory
-WORKDIR /opt/app
-
-# Copy package files first
+# 复制package文件
 COPY package*.json ./
 
-# Install ALL dependencies (including dev dependencies for development)
-RUN npm ci
+# 安装依赖
+RUN npm ci --only=production
 
-# Copy source code
+# 复制源代码
 COPY . .
 
-# Ensure data directory exists and has correct permissions
-RUN mkdir -p .tmp public/uploads
+# 确保.tmp目录存在并复制开发数据
+RUN mkdir -p .tmp
 
-# Build the application
+# 构建应用
 RUN npm run build
 
-# Create non-root user
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S strapi -u 1001
-
-# Change ownership of app directory
-RUN chown -R strapi:nodejs /opt/app
-
-# Switch to non-root user
-USER strapi
-
-# Expose port
+# 暴露端口
 EXPOSE 1337
 
-# For development: use npm run develop instead of npm start
-CMD ["npm", "run", "develop"] 
+# 启动应用
+CMD ["npm", "start"] 

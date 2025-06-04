@@ -1,21 +1,60 @@
-node_modules
-npm-debug.log
-.git
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Git
+.git/
 .gitignore
-README.md
+
+# 环境文件
 .env*
-.tmp
-dist
-coverage
-.cache
-.vscode
-.idea
-*.swp
-*.swo
+!.env.example
+
+# 开发文件
+*.md
+LICENSE
+
+# IDE
+.vscode/
+.idea/
+
+# 测试文件
+coverage/
+.nyc_output/
+
+# 缓存
+.npm/
+.eslintcache
+
+# 日志
+*.log
+
+# 临时文件和构建文件
+dist/
+build/
+
+# OS
 .DS_Store
 Thumbs.db
-*.log
+
+README.md
+coverage
+.cache
+*.swp
+*.swo
+
+# 允许包含.tmp目录（包含SQLite数据库）
+# .tmp/
+
+# 允许包含uploads目录
+# public/uploads/
+
+# 数据库文件
 database/*.db
 database/*.sqlite
 database/*.sqlite3
+
+# 部署脚本
 deploy/*.ps1 
