@@ -9,8 +9,8 @@ WORKDIR /opt/app
 # Copy package files first
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production
+# Install ALL dependencies (including dev dependencies for development)
+RUN npm ci
 
 # Copy source code
 COPY . .
@@ -34,5 +34,5 @@ USER strapi
 # Expose port
 EXPOSE 1337
 
-# Start the application
-CMD ["npm", "start"] 
+# For development: use npm run develop instead of npm start
+CMD ["npm", "run", "develop"] 
