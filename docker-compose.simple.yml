@@ -50,3 +50,23 @@ volumes:
 networks:
   strapi:
     name: strapi 
+
+
+environment:
+  NODE_ENV: development
+  DATABASE_CLIENT: sqlite
+  DATABASE_FILENAME: .tmp/data.db
+  JWT_SECRET: myJwtSecret
+  ADMIN_JWT_SECRET: myAdminJwtSecret
+  APP_KEYS: myAppKey1,myAppKey2,myAppKey3,myAppKey4
+  API_TOKEN_SALT: myApiTokenSalt
+  TRANSFER_TOKEN_SALT: myTransferTokenSalt
+  HOST: 0.0.0.0
+  PORT: 1337
+  # 添加这些行来支持域名访问
+  PUBLIC_URL: https://learn.waynechen.xyz
+  STRAPI_ADMIN_CLIENT_URL: https://learn.waynechen.xyz
+  STRAPI_ADMIN_CLIENT_PREVIEW_SECRET: myPreviewSecret
+  IS_PROXIED: true
+  STRAPI_DISABLE_UPDATE_NOTIFICATION: true
+  STRAPI_HIDE_STARTUP_MESSAGE: false
