@@ -1,6 +1,6 @@
-
-.env # ALL .env files
-.env.*############################
+# .env # ALL .env files - 注释掉，因为测试环境需要包含配置文件
+# .env.* - 注释掉，因为测试环境需要包含配置文件
+############################
 # OS X
 ############################
 
@@ -67,12 +67,12 @@ $RECYCLE.BIN/
 # Logs and databases
 ############################
 
-.tmp/
+# .tmp/ - 注释掉，因为需要包含数据库文件
 *.log
 *.sql
 *.sqlite
 *.sqlite3
-database/data.db # Strapi's default SQLite file location if used locally
+# database/data.db # Strapi's default SQLite file location if used locally - 注释掉，允许包含数据库
 
 
 ############################
@@ -125,8 +125,8 @@ coverage/
 # Strapi
 ############################
 
-.env # ALL .env files
-.env.*
+# .env # ALL .env files - 注释掉，测试环境需要包含
+# .env.* - 注释掉，测试环境需要包含
 !.env.example # Keep example files
 !.env.development.example
 !.env.production.example
