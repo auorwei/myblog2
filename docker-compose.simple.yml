@@ -11,11 +11,41 @@ services:
       # 确保容器内的关键配置
       HOST: 0.0.0.0
       PORT: ${PORT:-1337}
+      
+      # 生产环境配置但使用开发数据库
+      NODE_ENV: production
+      DATABASE_CLIENT: sqlite
+      DATABASE_FILENAME: .tmp/data.db
+      
+      # 域名访问配置
+      PUBLIC_URL: https://learn.waynechen.xyz
+      STRAPI_ADMIN_CLIENT_URL: https://learn.waynechen.xyz
+      STRAPI_ADMIN_CLIENT_PREVIEW_SECRET: ${STRAPI_ADMIN_CLIENT_PREVIEW_SECRET:-preview-secret}
+      IS_PROXIED: true
+      
+      # Vite配置 - 解决域名阻止问题
+      VITE_HOST: 0.0.0.0
+      VITE_PORT: ${PORT:-1337}
+      VITE_ALLOWED_HOSTS: learn.waynechen.xyz,localhost,127.0.0.1
+      DANGEROUSLY_DISABLE_HOST_CHECK: true
+      
+      # 其他生产环境配置
+      STRAPI_DISABLE_UPDATE_NOTIFICATION: true
+      STRAPI_HIDE_STARTUP_MESSAGE: false
+      STRAPI_LOG_LEVEL: info
+      
     volumes:
+      # 使用开发环境的数据库和上传文件
       - ./.tmp:/app/.tmp
       - ./public/uploads:/app/public/uploads
     ports:
       - "${PORT:-1337}:${PORT:-1337}"
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:${PORT:-1337}", "||", "exit", "1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
 networks:
   default:
